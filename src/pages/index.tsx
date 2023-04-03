@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TaskBoardCard from "@/components/TaskBoardCard";
 import { Grid } from "@mui/material";
 import { taskBoardsStore } from "@/stores/task-boards";
 
 export default function Home() {
+  useEffect(() => {
+    if (!taskBoardsStore.areBoardsLoaded.value) {
+      taskBoardsStore.loadBoards();
+    }
+    console.log("refetching");
+  }, []);
+
   return (
     <main>
       <div className="px-10 py-8">

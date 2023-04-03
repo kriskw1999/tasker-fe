@@ -1,13 +1,11 @@
 import { signal } from "@preact/signals-react";
-import { buildTaskBoardMock } from "@/mocks/taskBoards";
 import { TaskBoard } from "@/stores/task-boards/types";
 import { getById } from "@/utils/array";
+import { $api } from "@/api";
 
 export const taskBoardsStore = {
-  boards: signal<TaskBoard[]>([
-    buildTaskBoardMock(),
-    buildTaskBoardMock({ id: 2, title: "Task Board 2" }),
-  ]),
+  boards: signal<TaskBoard[]>([]),
+  areBoardsLoaded: signal(false),
   setTaskChecked: function (boardId: number, taskId: number) {
     const board = getById(boardId, this.boards.value)!;
     const task = getById(taskId, board.tasks)!;
@@ -16,17 +14,12 @@ export const taskBoardsStore = {
 
     this.boards.value = [...this.boards.value];
   },
-  addNewTask: function (boardId: number, title: string) {
-    const board = getById(boardId, this.boards.value)!;
+  addNewTask: async function (taskBoardId: number, title: string) {
+    const newTask = await $api.task.post({ title, taskBoardId });
 
-    console.log(board);
+    const board = getById(taskBoardId, this.boards.value)!;
 
-    board.tasks.push({
-      id: board.tasks.length + 1,
-      title,
-      done: false,
-      recurrent: false,
-    });
+    board.tasks.push(newTask);
 
     this.boards.value = [...this.boards.value];
   },
@@ -37,5 +30,10 @@ export const taskBoardsStore = {
     task.title = title;
 
     this.boards.value = [...this.boards.value];
+  },
+  loadBoards: async function () {
+    this.areBoardsLoaded.value = false;
+    this.boards.value = await $api.taskBoards.get();
+    this.areBoardsLoaded.value = true;
   },
 };
