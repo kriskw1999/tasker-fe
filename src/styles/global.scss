@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.flipping-card {
+  transform-style: preserve-3d;
+  transition: .8s transform ease;
+  perspective: 40rem;
+}
+
+.card-flipped {
+  transform: rotateX(-180deg);
+}
+
+.flipping-card-front, .flipping-card-back {
+  backface-visibility: hidden;
+}
+
+.flipping-card-back {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  margin: 16px;
+  transform: rotateX(-180deg);
+}

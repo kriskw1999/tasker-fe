@@ -1,1 +1,5 @@
-export type Endpoint = "taskboards" | "tasks";
+export type Endpoint =
+  | "taskboards"
+  | "tasks"
+  | `tasks/${number}`
+  | `taskboards/${number}`;

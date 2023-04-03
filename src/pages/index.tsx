@@ -16,7 +16,7 @@ export default function Home() {
       <div className="px-10 py-8">
         <Grid container spacing={2}>
           {taskBoardsStore.boards.value.map((taskBoard, idx) => (
-            <Grid key={idx} item xs={12} md={6} xl={3}>
+            <Grid key={`${idx}-${taskBoard.id}`} item xs={12} md={6} xl={3}>
               <TaskBoardCard taskBoard={taskBoard} />
             </Grid>
           ))}

@@ -3,6 +3,7 @@ import { Task } from "@/stores/task-boards/types";
 import { Checkbox } from "@mui/material";
 import { taskBoardsStore } from "@/stores/task-boards";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Hover from "@/components/Hover";
 import EditLabelRow from "@/components/EditLabelRow";
 
@@ -16,7 +17,11 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, boardId }) => {
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
 
   const setTaskChecked = () => {
-    taskBoardsStore.setTaskChecked(boardId, task.id);
+    taskBoardsStore.setTaskChecked(boardId, task.id, !task.done);
+  };
+
+  const deleteTask = () => {
+    taskBoardsStore.deleteTask(boardId, task.id);
   };
 
   if (!isChangingTask) {
@@ -31,12 +36,18 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, boardId }) => {
         <span className={task.done ? "line-through" : ""}>{task.title}</span>
 
         {isHovered && (
-          <BorderColorRoundedIcon
-            className="text-warning cursor-pointer pl-1"
-            onClick={() => {
-              setIsChangingTask(true);
-            }}
-          />
+          <>
+            <BorderColorRoundedIcon
+              className="text-warning cursor-pointer pl-1"
+              onClick={() => {
+                setIsChangingTask(true);
+              }}
+            />
+            <DeleteIcon
+              className="text-error cursor-pointer pl-1"
+              onClick={deleteTask}
+            />
+          </>
         )}
       </Hover>
     );

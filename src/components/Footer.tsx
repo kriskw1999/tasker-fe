@@ -2,7 +2,7 @@ import { Favorite } from "@mui/icons-material";
 
 const Footer = () => {
   return (
-    <footer className="flex justify-between px-10 py-4 fixed bottom-0 right-0 left-0 bg-white">
+    <footer className="flex justify-between px-10 py-4 fixed bottom-0 right-0 left-0 bg-white drop-shadow-2xl">
       <div className="flex gap-1">
         <p>Made with</p> <Favorite className="text-accent" />
         <p>by</p>

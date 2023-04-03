@@ -1,18 +1,25 @@
 import { signal } from "@preact/signals-react";
 import { TaskBoard } from "@/stores/task-boards/types";
-import { getById } from "@/utils/array";
+import { addToCollectionOrReplaceById, getById } from "@/utils/array";
 import { $api } from "@/api";
+import { updateTask } from "@/api/tasks";
+import { sortBoardsTasks } from "@/utils/board";
 
 export const taskBoardsStore = {
   boards: signal<TaskBoard[]>([]),
   areBoardsLoaded: signal(false),
-  setTaskChecked: function (boardId: number, taskId: number) {
+  setTaskChecked: async function (
+    boardId: number,
+    taskId: number,
+    done: boolean
+  ) {
     const board = getById(boardId, this.boards.value)!;
-    const task = getById(taskId, board.tasks)!;
 
-    task.done = !task.done;
+    const task = await updateTask(taskId, { done });
 
-    this.boards.value = [...this.boards.value];
+    addToCollectionOrReplaceById(board.tasks, task);
+
+    this.refreshBoards();
   },
   addNewTask: async function (taskBoardId: number, title: string) {
     const newTask = await $api.task.post({ title, taskBoardId });
@@ -21,19 +28,58 @@ export const taskBoardsStore = {
 
     board.tasks.push(newTask);
 
-    this.boards.value = [...this.boards.value];
+    this.refreshBoards();
   },
-  updateTaskTitle: function (boardId: number, taskId: number, title: string) {
+  updateTaskTitle: async function (
+    boardId: number,
+    taskId: number,
+    title: string
+  ) {
     const board = getById(boardId, this.boards.value)!;
-    const task = getById(taskId, board.tasks)!;
 
-    task.title = title;
+    const task = await updateTask(taskId, { title });
 
-    this.boards.value = [...this.boards.value];
+    addToCollectionOrReplaceById(board.tasks, task);
+
+    this.refreshBoards();
   },
   loadBoards: async function () {
     this.areBoardsLoaded.value = false;
-    this.boards.value = await $api.taskBoards.get();
+    const boards = await $api.taskBoards.get();
+    this.boards.value = sortBoardsTasks(boards);
     this.areBoardsLoaded.value = true;
+  },
+  deleteTask: async function (boardId: number, taskId: number) {
+    const board = getById(boardId, this.boards.value)!;
+
+    await $api.task.delete(taskId);
+
+    board.tasks = board.tasks.filter((task) => task.id !== taskId);
+
+    this.refreshBoards();
+  },
+  refreshBoards: function () {
+    this.boards.value = [...this.boards.value];
+  },
+  updateBoardTitle: async function (boardId: number, title: string) {
+    const board = await $api.taskBoards.patch(boardId, { title });
+
+    addToCollectionOrReplaceById(this.boards.value, board);
+
+    this.refreshBoards();
+  },
+  deleteTaskBoard: async function (boardId: number) {
+    await $api.taskBoards.delete(boardId);
+
+    this.boards.value = this.boards.value.filter(
+      (board) => board.id !== boardId
+    );
+  },
+  createTaskBoard: async function (title: string) {
+    const newBoard = await $api.taskBoards.post({ title });
+
+    this.boards.value.push(newBoard);
+
+    this.refreshBoards();
   },
 };

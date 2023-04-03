@@ -23,24 +23,25 @@ const ProfileInfo = () => {
 
   if (isAuthenticated && user) {
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4">
         <p className="text-white">{user.email}</p>
-        <img
-          className="rounded-full h-10 w-10 cursor-pointer"
-          src={user.picture}
-          alt={user.name}
-          onClick={onImageClick}
-        />
+
+        <div className="bg-white rounded-full p-1">
+          <img
+            className="rounded-full h-10 w-10 cursor-pointer"
+            src={user.picture}
+            alt={user.name}
+            onClick={onImageClick}
+          />
+        </div>
 
         <Popover
           id="basic-menu"
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
         >
           <div className="bg-white cursor-pointer px-5 py-5 rounded-md flex items-center gap-2">
             <Button

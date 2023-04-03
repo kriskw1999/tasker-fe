@@ -9,12 +9,15 @@ const startFetch = (endpoint: string, method: string, body?: any) => {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((res) => res.json());
+  });
 };
 
 export const http = {
-  get: (endpoint: Endpoint) => startFetch(endpoint, "GET"),
-  post: (endpoint: Endpoint, body: any) => startFetch(endpoint, "POST", body),
-  patch: (endpoint: Endpoint, body: any) => startFetch(endpoint, "PATCH", body),
+  get: (endpoint: Endpoint) =>
+    startFetch(endpoint, "GET").then((res) => res.json()),
+  post: (endpoint: Endpoint, body: any) =>
+    startFetch(endpoint, "POST", body).then((res) => res.json()),
+  patch: (endpoint: Endpoint, body: any) =>
+    startFetch(endpoint, "PATCH", body).then((res) => res.json()),
   delete: (endpoint: Endpoint) => startFetch(endpoint, "DELETE"),
 };
