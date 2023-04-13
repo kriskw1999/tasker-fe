@@ -19,7 +19,7 @@ const TaskBoardCard: React.FC<TaskContainerProps> = ({
 
   return (
     <div
-      className={`bg-white shadow-lg hover:shadow-xl rounded-lg p-4 h-96 flipping-card ${
+      className={`bg-white shadow-lg hover:shadow-xl rounded-lg p-4 h-96 flipping-card fade-in ${
         isFlipped ? "card-flipped" : ""
       }`}
       onKeyDown={(e) => {

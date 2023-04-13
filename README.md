@@ -9,3 +9,5 @@ Any kind of contribution or suggestions are welcome. Feel free to open an issue 
 ## UI
 ![image](https://user-images.githubusercontent.com/71312948/229361301-0ecc6dcf-a868-4a7a-a876-fd8237e9d1f3.png)
 
+## Figma
+https://www.figma.com/file/cIaV3qvbN05rLXga5EOa2h/Untitled?node-id=0-1&t=UVR5iTrBHWRjPlG8-0

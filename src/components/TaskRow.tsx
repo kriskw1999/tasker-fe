@@ -10,9 +10,10 @@ import EditLabelRow from "@/components/EditLabelRow";
 type TaskRowProps = {
   task: Task;
   boardId: number;
+  isDemo?: boolean;
 };
 
-const TaskRow: React.FC<TaskRowProps> = ({ task, boardId }) => {
+const TaskRow: React.FC<TaskRowProps> = ({ task, boardId, isDemo = false }) => {
   const [isChangingTask, setIsChangingTask] = React.useState<boolean>(false);
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
 
@@ -30,12 +31,12 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, boardId }) => {
         <Checkbox
           className="pl-0 py-2"
           checked={task.done}
-          onClick={setTaskChecked}
+          onClick={!isDemo ? setTaskChecked : () => {}}
         />
 
         <span className={task.done ? "line-through" : ""}>{task.title}</span>
 
-        {isHovered && (
+        {isHovered && !isDemo && (
           <>
             <BorderColorRoundedIcon
               className="text-warning cursor-pointer pl-1"

@@ -1,13 +1,14 @@
 import { Endpoint } from "@/api/endpoint";
-
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT!;
+import { clientStore } from "@/stores/client";
+import { getEnv } from "@/utils/env";
 
 const startFetch = (endpoint: string, method: string, body?: any) => {
-  return fetch(API_ENDPOINT + endpoint, {
+  return fetch(getEnv().apiEndpoint + endpoint, {
     method,
     body: JSON.stringify(body),
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${clientStore.jwt.value}`,
     },
   });
 };

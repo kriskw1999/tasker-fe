@@ -10,8 +10,8 @@ type AddTaskRowProps = {
 const AddTaskRow: React.FC<AddTaskRowProps> = ({ boardId }) => {
   const [isAddingTask, setIsAddingTask] = useState<boolean>(false);
 
-  const addTask = (label: string) => {
-    taskBoardsStore.addNewTask(boardId, label);
+  const addTask = async (label: string) => {
+    await taskBoardsStore.addNewTask(boardId, label);
     setIsAddingTask(false);
   };
 

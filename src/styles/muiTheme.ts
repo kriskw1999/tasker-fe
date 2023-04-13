@@ -5,5 +5,8 @@ export const muiTheme = createTheme({
     primary: {
       main: "#2E294E",
     },
+    info: {
+      main: "#D9D9D9",
+    },
   },
 });

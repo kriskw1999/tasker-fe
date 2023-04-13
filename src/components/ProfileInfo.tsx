@@ -2,6 +2,7 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Button, CircularProgress, Popover } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
+import { getEnv } from "@/utils/env";
 
 const ProfileInfo = () => {
   const { user, isAuthenticated, isLoading, logout, loginWithRedirect } =
@@ -47,7 +48,9 @@ const ProfileInfo = () => {
             <Button
               onClick={() => {
                 handleClose();
-                logout();
+                logout({
+                  logoutParams: { returnTo: `${getEnv().appEndpoint}home` },
+                });
               }}
               variant="outlined"
             >

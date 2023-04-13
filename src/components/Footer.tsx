@@ -7,7 +7,7 @@ const Footer = () => {
         <p>Made with</p> <Favorite className="text-accent" />
         <p>by</p>
         <a
-          className="text-primary underline"
+          className="text-primary underline font-bold"
           href="https://github.com/kriskw1999"
           target="_blank"
           rel="noreferrer"
