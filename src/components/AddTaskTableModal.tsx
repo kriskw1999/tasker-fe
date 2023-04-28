@@ -1,20 +1,23 @@
 import { Button, Modal, TextField } from "@mui/material";
-import React from "react";
+import React, { useCallback } from "react";
 import { taskBoardsStore } from "@/stores/task-boards";
 
-type AddTaskTableModal = {
+type AddTaskTableModalProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
 };
 
-const AddTaskTableModal: React.FC<AddTaskTableModal> = ({ open, setOpen }) => {
+const AddTaskTableModal: React.FC<AddTaskTableModalProps> = ({
+  open,
+  setOpen,
+}) => {
   const [title, setTitle] = React.useState("");
 
-  const handleCreateBoard = async () => {
+  const handleCreateBoard = useCallback(async () => {
     await taskBoardsStore.createTaskBoard(title);
     setTitle("");
     setOpen(false);
-  };
+  }, [setOpen, title]);
 
   return (
     <Modal

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Task } from "@/stores/task-boards/types";
 import { Checkbox } from "@mui/material";
 import { taskBoardsStore } from "@/stores/task-boards";
@@ -17,13 +17,13 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, boardId, isDemo = false }) => {
   const [isChangingTask, setIsChangingTask] = React.useState<boolean>(false);
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
 
-  const setTaskChecked = () => {
+  const setTaskChecked = useCallback(() => {
     taskBoardsStore.setTaskChecked(boardId, task.id, !task.done);
-  };
+  }, [boardId, task.id, task.done]);
 
-  const deleteTask = () => {
+  const deleteTask = useCallback(() => {
     taskBoardsStore.deleteTask(boardId, task.id);
-  };
+  }, [boardId, task.id]);
 
   if (!isChangingTask) {
     return (
@@ -52,20 +52,20 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, boardId, isDemo = false }) => {
         )}
       </Hover>
     );
-  } else {
-    return (
-      <EditLabelRow
-        initialValue={task.title}
-        onSave={(title) => {
-          taskBoardsStore.updateTaskTitle(boardId, task.id, title);
-          setIsChangingTask(false);
-        }}
-        onCancel={() => {
-          setIsChangingTask(false);
-        }}
-      />
-    );
   }
+
+  return (
+    <EditLabelRow
+      initialValue={task.title}
+      onSave={(title) => {
+        taskBoardsStore.updateTaskTitle(boardId, task.id, title);
+        setIsChangingTask(false);
+      }}
+      onCancel={() => {
+        setIsChangingTask(false);
+      }}
+    />
+  );
 };
 
 export default TaskRow;

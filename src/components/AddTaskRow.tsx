@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { taskBoardsStore } from "@/stores/task-boards";
 import EditLabelRow from "@/components/EditLabelRow";
@@ -10,10 +10,13 @@ type AddTaskRowProps = {
 const AddTaskRow: React.FC<AddTaskRowProps> = ({ boardId }) => {
   const [isAddingTask, setIsAddingTask] = useState<boolean>(false);
 
-  const addTask = async (label: string) => {
-    await taskBoardsStore.addNewTask(boardId, label);
-    setIsAddingTask(false);
-  };
+  const addTask = useCallback(
+    async (label: string) => {
+      await taskBoardsStore.addNewTask(boardId, label);
+      setIsAddingTask(false);
+    },
+    [boardId]
+  );
 
   if (!isAddingTask) {
     return (
