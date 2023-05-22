@@ -5,6 +5,7 @@ type HoverProps = PropsWithChildren & {
   setHover: (hover: boolean) => void;
 };
 
+// On hover injects the hover state into the children
 const Hover: React.FC<HoverProps> = ({ className, children, setHover }) => {
   return (
     <div
